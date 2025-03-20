@@ -34,24 +34,21 @@ export function IntegrationCategories({
   const currentCategory = activeCategory || internalActiveCategory;
 
   return (
-    <div className="rounded-lg border border-border/50 bg-card/90 p-4 mb-4">
-      <h3 className="text-sm font-medium mb-3 text-foreground">Integration Categories</h3>
-      <div className="flex overflow-x-auto gap-2 pb-2">
-        {categories.map((category) => (
-          <Button
-            key={category.id}
-            variant="outline"
-            size="sm"
-            className={cn(
-              "text-xs whitespace-nowrap transition-colors",
-              currentCategory === category.id && "bg-accent/50 border-accent font-medium"
-            )}
-            onClick={() => handleCategoryChange(category.id)}
-          >
-            {category.name}
-          </Button>
-        ))}
-      </div>
+    <div className="flex overflow-x-auto gap-2 pb-2 mb-2">
+      {categories.map((category) => (
+        <Button
+          key={category.id}
+          variant="outline"
+          size="sm"
+          className={cn(
+            "text-xs whitespace-nowrap",
+            currentCategory === category.id && "bg-accent/50 border-accent"
+          )}
+          onClick={() => handleCategoryChange(category.id)}
+        >
+          {category.name}
+        </Button>
+      ))}
     </div>
   );
 }

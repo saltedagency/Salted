@@ -1,12 +1,13 @@
 
 import { cn } from "@/lib/utils";
 import {
+  ArrowDownIcon,
+  ArrowUpIcon,
   InfoIcon,
   TrendingDownIcon,
   TrendingUpIcon,
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Card } from "@/components/ui/card";
 
 interface MetricCardProps {
   title: string;
@@ -34,15 +35,15 @@ export function MetricCard({
   suffix = "",
 }: MetricCardProps) {
   return (
-    <Card
+    <div
       className={cn(
-        "p-5 rounded-xl animate-scale-in transition-all duration-200 hover:shadow-md",
+        "glass-card p-5 rounded-xl animate-scale-in",
         className
       )}
     >
       <div className="flex justify-between items-start mb-2">
         <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-        {icon && <span className="text-muted-foreground">{icon}</span>}
+        {icon}
       </div>
 
       <div className="flex items-baseline mt-1">
@@ -87,6 +88,6 @@ export function MetricCard({
           )}
         </div>
       )}
-    </Card>
+    </div>
   );
 }
