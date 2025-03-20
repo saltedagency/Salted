@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   AlertTriangleIcon,
   ArrowRightIcon,
@@ -74,9 +75,12 @@ export function LeakAnalysis({ className }: LeakAnalysisProps) {
           variant="ghost"
           size="sm"
           className="text-xs h-8 hover:bg-accent flex items-center gap-1"
+          asChild
         >
-          <span>View all</span>
-          <ArrowRightIcon className="h-3.5 w-3.5" />
+          <Link to="/leaks">
+            <span>View all</span>
+            <ArrowRightIcon className="h-3.5 w-3.5" />
+          </Link>
         </Button>
       </div>
 

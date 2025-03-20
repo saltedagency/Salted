@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { AlertTriangleIcon, ArrowRightIcon, DollarSignIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface LeakageIndicatorProps {
   totalLoss: string | number;
@@ -18,6 +19,11 @@ export function LeakageIndicator({
   lowPriorityLeaks,
   className,
 }: LeakageIndicatorProps) {
+  // If totalLoss is a string that starts with $, remove the $ since we're adding one with the icon
+  const formattedLoss = typeof totalLoss === 'string' && totalLoss.startsWith('$') 
+    ? totalLoss.substring(1) 
+    : totalLoss;
+
   return (
     <div
       className={cn(
@@ -34,9 +40,12 @@ export function LeakageIndicator({
           variant="ghost"
           size="sm"
           className="text-xs h-8 hover:bg-accent flex items-center gap-1"
+          asChild
         >
-          <span>View all</span>
-          <ArrowRightIcon className="h-3.5 w-3.5" />
+          <Link to="/leaks">
+            <span>View all</span>
+            <ArrowRightIcon className="h-3.5 w-3.5" />
+          </Link>
         </Button>
       </div>
 
@@ -44,7 +53,7 @@ export function LeakageIndicator({
         <div className="flex flex-col">
           <div className="flex items-baseline">
             <DollarSignIcon className="h-5 w-5 text-foreground mr-1" />
-            <h2 className="text-3xl font-bold text-gradient">{totalLoss}</h2>
+            <h2 className="text-3xl font-bold text-gradient">{formattedLoss}</h2>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
             Estimated annual revenue loss

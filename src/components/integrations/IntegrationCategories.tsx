@@ -12,8 +12,26 @@ const categories = [
   { id: "crm", name: "CRM" },
 ];
 
-export function IntegrationCategories() {
-  const [activeCategory, setActiveCategory] = useState("all");
+interface IntegrationCategoriesProps {
+  activeCategory?: string;
+  onCategoryChange?: (categoryId: string) => void;
+}
+
+export function IntegrationCategories({ 
+  activeCategory = "all", 
+  onCategoryChange
+}: IntegrationCategoriesProps) {
+  const [internalActiveCategory, setInternalActiveCategory] = useState(activeCategory);
+  
+  const handleCategoryChange = (categoryId: string) => {
+    setInternalActiveCategory(categoryId);
+    if (onCategoryChange) {
+      onCategoryChange(categoryId);
+    }
+  };
+  
+  // Use the passed activeCategory if provided, otherwise use internal state
+  const currentCategory = activeCategory || internalActiveCategory;
 
   return (
     <div className="flex overflow-x-auto gap-2 pb-2 mb-2">
@@ -24,9 +42,9 @@ export function IntegrationCategories() {
           size="sm"
           className={cn(
             "text-xs whitespace-nowrap",
-            activeCategory === category.id && "bg-accent/50 border-accent"
+            currentCategory === category.id && "bg-accent/50 border-accent"
           )}
-          onClick={() => setActiveCategory(category.id)}
+          onClick={() => handleCategoryChange(category.id)}
         >
           {category.name}
         </Button>

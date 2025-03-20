@@ -16,6 +16,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 const reports = [
   {
@@ -25,6 +27,7 @@ const reports = [
     date: "May 12, 2023",
     icon: <BarChart2Icon className="h-4 w-4" />,
     iconColor: "text-primary",
+    path: "/dashboard"
   },
   {
     id: "report-2",
@@ -33,6 +36,7 @@ const reports = [
     date: "Apr 1, 2023",
     icon: <LayersIcon className="h-4 w-4" />,
     iconColor: "text-destructive",
+    path: "/leaks"
   },
   {
     id: "report-3",
@@ -41,6 +45,7 @@ const reports = [
     date: "Mar 15, 2023",
     icon: <LineChartIcon className="h-4 w-4" />,
     iconColor: "text-success",
+    path: "/journey"
   },
   {
     id: "report-4",
@@ -49,10 +54,18 @@ const reports = [
     date: "Jan 5, 2023",
     icon: <BarChart2Icon className="h-4 w-4" />,
     iconColor: "text-primary",
+    path: "/analytics"
   },
 ];
 
 export function ReportsList() {
+  const handleDownload = (reportName: string) => {
+    toast({
+      title: "Download started",
+      description: `${reportName} is being downloaded`,
+    });
+  };
+
   return (
     <div className="space-y-2">
       {reports.map((report) => (
@@ -73,10 +86,17 @@ export function ReportsList() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <EyeIcon className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+              <Link to={report.path}>
+                <EyeIcon className="h-4 w-4" />
+              </Link>
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-8 w-8"
+              onClick={() => handleDownload(report.name)}
+            >
               <DownloadIcon className="h-4 w-4" />
             </Button>
             <DropdownMenu>
@@ -86,10 +106,28 @@ export function ReportsList() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>View Details</DropdownMenuItem>
-                <DropdownMenuItem>Share Report</DropdownMenuItem>
-                <DropdownMenuItem>Schedule</DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to={report.path}>View Details</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast({
+                  title: "Report shared",
+                  description: `${report.name} has been shared`,
+                })}>
+                  Share Report
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => toast({
+                  title: "Report scheduled",
+                  description: `${report.name} has been scheduled`,
+                })}>
+                  Schedule
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive" onClick={() => toast({
+                  title: "Report deleted",
+                  description: `${report.name} has been deleted`,
+                  variant: "destructive"
+                })}>
+                  Delete
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

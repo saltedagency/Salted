@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BarChart2, ArrowRightIcon } from "lucide-react";
 import { LeakTrends } from "@/components/leaks/LeakTrends";
 import { LeakageByCategory } from "@/components/leaks/LeakageByCategory";
+import { Link } from "react-router-dom";
 
 const RevenueLeaks = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,9 +34,12 @@ const RevenueLeaks = () => {
                 variant="ghost"
                 size="sm"
                 className="text-xs h-8 hover:bg-accent flex items-center gap-1"
+                asChild
               >
-                <span>Export Report</span>
-                <ArrowRightIcon className="h-3.5 w-3.5" />
+                <Link to="/reports">
+                  <span>Export Report</span>
+                  <ArrowRightIcon className="h-3.5 w-3.5" />
+                </Link>
               </Button>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
