@@ -2,10 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Checkbox,
-  CheckboxIndicator
-} from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { 
   Dialog, 
@@ -78,11 +75,7 @@ export function DashboardCustomization() {
                 id={section.id}
                 checked={section.visible}
                 onCheckedChange={() => toggleSection(section.id)}
-              >
-                <CheckboxIndicator>
-                  <Check className="h-4 w-4" />
-                </CheckboxIndicator>
-              </Checkbox>
+              />
               <Label htmlFor={section.id}>{section.name}</Label>
             </div>
           ))}
