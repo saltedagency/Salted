@@ -6,10 +6,13 @@ import {
   AlertTriangleIcon,
   ArrowRightIcon,
   BarChart2Icon,
-  CheckCircleIcon,
   Clock3Icon,
   DollarSignIcon,
+  LightbulbIcon,
 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 type LeakItem = {
   id: string;
@@ -59,18 +62,26 @@ interface LeakAnalysisProps {
 }
 
 export function LeakAnalysis({ className }: LeakAnalysisProps) {
+  const { toast } = useToast();
+  
+  const handleFixNow = (leakTitle: string) => {
+    toast({
+      title: "Optimization started",
+      description: `Working on fixing: ${leakTitle}`,
+    });
+  };
+
   return (
-    <div
+    <Card
       className={cn(
-        "glass-card p-5 rounded-xl w-full animate-fade-in",
         className
       )}
     >
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium flex items-center gap-2">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+        <CardTitle className="text-lg font-medium flex items-center gap-2">
           <AlertTriangleIcon className="h-5 w-5 text-destructive" />
           <span>Top Revenue Leaks</span>
-        </h3>
+        </CardTitle>
         <Button
           variant="ghost"
           size="sm"
@@ -82,94 +93,109 @@ export function LeakAnalysis({ className }: LeakAnalysisProps) {
             <ArrowRightIcon className="h-3.5 w-3.5" />
           </Link>
         </Button>
-      </div>
-
-      <div className="space-y-3">
-        {leakItems.map((leak) => (
-          <div
-            key={leak.id}
-            className="p-4 rounded-lg bg-card/50 border border-border/30 hover:bg-accent/10 transition-all duration-200"
-          >
-            <div className="flex justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <div
-                    className={cn(
-                      "h-2 w-2 rounded-full",
-                      leak.impact === "high"
-                        ? "bg-leak-high"
-                        : leak.impact === "medium"
-                        ? "bg-leak-medium"
-                        : "bg-leak-low"
-                    )}
-                  ></div>
-                  <h4 className="text-sm font-medium">{leak.title}</h4>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Stage: {leak.stage}
-                </p>
-              </div>
-              <div className="flex flex-col items-end">
-                <div className="flex items-center">
-                  <DollarSignIcon className="h-3.5 w-3.5 text-foreground mr-0.5" />
-                  <span className="text-sm font-semibold">{leak.loss}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">Annual loss</p>
-              </div>
-            </div>
-
-            <p className="text-xs mt-3 text-foreground">{leak.description}</p>
-
-            <div className="flex justify-between items-center mt-3">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center">
-                  <BarChart2Icon className="h-3.5 w-3.5 text-muted-foreground mr-1" />
-                  <span className="text-xs text-muted-foreground">
-                    Impact: 
-                    <span
-                      className={cn(
-                        "ml-1 font-medium",
-                        leak.impact === "high"
-                          ? "text-leak-high"
-                          : leak.impact === "medium"
-                          ? "text-leak-medium"
-                          : "text-leak-low"
-                      )}
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {leakItems.map((leak) => (
+            <Card
+              key={leak.id}
+              className="p-4 hover:shadow-md transition-all duration-200 border-l-4 overflow-hidden"
+              style={{
+                borderLeftColor: leak.impact === "high" 
+                  ? "hsl(var(--leak-high))" 
+                  : leak.impact === "medium" 
+                  ? "hsl(var(--leak-medium))" 
+                  : "hsl(var(--leak-low))"
+              }}
+            >
+              <div className="flex justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-sm font-medium">{leak.title}</h4>
+                    <Badge 
+                      variant={
+                        leak.impact === "high" 
+                          ? "destructive" 
+                          : leak.impact === "medium" 
+                          ? "default" 
+                          : "outline"
+                      }
+                      className="text-[10px] py-0 h-4"
                     >
                       {leak.impact}
-                    </span>
-                  </span>
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Stage: {leak.stage}
+                  </p>
                 </div>
-                <div className="flex items-center">
-                  <Clock3Icon className="h-3.5 w-3.5 text-muted-foreground mr-1" />
-                  <span className="text-xs text-muted-foreground">
-                    Effort: 
-                    <span
-                      className={cn(
-                        "ml-1 font-medium",
-                        leak.effort === "low"
-                          ? "text-success"
-                          : leak.effort === "medium"
-                          ? "text-leak-medium"
-                          : "text-leak-high"
-                      )}
-                    >
-                      {leak.effort}
-                    </span>
-                  </span>
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center">
+                    <DollarSignIcon className="h-3.5 w-3.5 text-foreground mr-0.5" />
+                    <span className="text-sm font-semibold">{leak.loss}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">Annual loss</p>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-7 text-xs px-2.5"
-              >
-                Fix Now
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+
+              <div className="mt-3 p-3 bg-accent/20 rounded-lg text-xs border border-accent/30">
+                <div className="flex items-start gap-2">
+                  <LightbulbIcon className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <p>{leak.description}</p>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center mt-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center">
+                    <BarChart2Icon className="h-3.5 w-3.5 text-muted-foreground mr-1" />
+                    <span className="text-xs text-muted-foreground">
+                      Impact: 
+                      <span
+                        className={cn(
+                          "ml-1 font-medium",
+                          leak.impact === "high"
+                            ? "text-leak-high"
+                            : leak.impact === "medium"
+                            ? "text-leak-medium"
+                            : "text-leak-low"
+                        )}
+                      >
+                        {leak.impact}
+                      </span>
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock3Icon className="h-3.5 w-3.5 text-muted-foreground mr-1" />
+                    <span className="text-xs text-muted-foreground">
+                      Effort: 
+                      <span
+                        className={cn(
+                          "ml-1 font-medium",
+                          leak.effort === "low"
+                            ? "text-success"
+                            : leak.effort === "medium"
+                            ? "text-leak-medium"
+                            : "text-leak-high"
+                        )}
+                      >
+                        {leak.effort}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  className="h-8 text-xs px-3"
+                  onClick={() => handleFixNow(leak.title)}
+                >
+                  Fix Now
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

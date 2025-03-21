@@ -36,13 +36,28 @@ export function MetricCard({
   return (
     <Card
       className={cn(
-        "p-5 rounded-xl animate-scale-in transition-all duration-200 hover:shadow-md",
+        "p-5 rounded-xl transition-all duration-200 hover:shadow-md hover:translate-y-[-2px]",
         className
       )}
     >
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-        {icon && <span className="text-muted-foreground">{icon}</span>}
+      <div className="flex justify-between items-start mb-3">
+        <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          {icon && <span className="text-primary">{icon}</span>}
+          <span>{title}</span>
+        </h3>
+        
+        {description && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <InfoIcon className="h-3.5 w-3.5 text-muted-foreground cursor-help hover:text-primary transition-colors" />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="max-w-xs text-xs bg-popover">
+                <p>{description}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
 
       <div className="flex items-baseline mt-1">
@@ -56,11 +71,11 @@ export function MetricCard({
       </div>
 
       {change !== undefined && (
-        <div className="flex items-center mt-2">
+        <div className="flex items-center mt-3 bg-card/80 p-2 rounded-lg border border-border/10">
           {trend === "up" ? (
-            <TrendingUpIcon className="h-4 w-4 text-success mr-1" />
+            <TrendingUpIcon className="h-4 w-4 text-success mr-1.5" />
           ) : trend === "down" ? (
-            <TrendingDownIcon className="h-4 w-4 text-destructive mr-1" />
+            <TrendingDownIcon className="h-4 w-4 text-destructive mr-1.5" />
           ) : null}
           <span
             className={cn(
@@ -71,20 +86,7 @@ export function MetricCard({
             {change > 0 ? "+" : ""}
             {change}%
           </span>
-          <span className="text-xs text-muted-foreground ml-1">vs. previous period</span>
-          
-          {description && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <InfoIcon className="h-3.5 w-3.5 text-muted-foreground ml-1 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xs max-w-xs">{description}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
+          <span className="text-xs text-muted-foreground ml-1.5">vs. previous period</span>
         </div>
       )}
     </Card>
