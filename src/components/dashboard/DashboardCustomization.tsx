@@ -49,8 +49,6 @@ export function DashboardCustomization() {
     
     // We would trigger a re-render of the dashboard with the new settings
     // or pass these settings to the dashboard component
-    
-    // Close the dialog (handled by Radix UI automatically on button click)
   };
 
   return (

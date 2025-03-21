@@ -1,5 +1,5 @@
 
-import { Palette } from "lucide-react";
+import { Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/button";
 import { ThemeToggleTooltip } from "@/components/theme/ThemeToggleTooltip";
@@ -25,8 +25,7 @@ export function ThemeToggle() {
 }
 
 function ThemeIcon({ theme }: { theme: string }) {
-  const { Sun, Moon } = require("lucide-react");
-  
+  // Directly import icons instead of using require
   switch (theme) {
     case "light":
       return <Sun className="h-5 w-5 text-foreground transition-all" />;
