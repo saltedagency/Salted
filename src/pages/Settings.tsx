@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,7 +6,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { SettingsIcon, UserIcon, BellIcon, KeyIcon, DatabaseIcon, CloudIcon, HelpCircleIcon } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { 
+  SettingsIcon, 
+  UserIcon, 
+  BellIcon, 
+  KeyIcon, 
+  DatabaseIcon, 
+  CloudIcon, 
+  HelpCircleIcon,
+  Palette,
+  SunIcon,
+  MoonIcon,
+  Sparkles
+} from "lucide-react";
+import { useTheme, ThemeType } from "@/context/ThemeContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
   const [loading, setLoading] = useState(false);
@@ -17,15 +32,29 @@ const Settings = () => {
     weeklyReport: true,
     leakAlert: true,
   });
+  const { theme, setTheme } = useTheme();
+  const { toast } = useToast();
 
   const handleSave = () => {
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      // Add toast notification here in the future
-      console.log("Settings saved");
+      toast({
+        title: "Settings saved",
+        description: "Your settings have been saved successfully.",
+        variant: "default",
+      });
     }, 1000);
+  };
+
+  const handleThemeChange = (value: string) => {
+    setTheme(value as ThemeType);
+    toast({
+      title: "Theme updated",
+      description: `Theme has been changed to ${value}.`,
+      variant: "default",
+    });
   };
 
   return (
@@ -50,6 +79,10 @@ const Settings = () => {
           <TabsTrigger value="security" className="gap-2">
             <KeyIcon className="h-4 w-4" />
             <span>Security</span>
+          </TabsTrigger>
+          <TabsTrigger value="appearance" className="gap-2">
+            <Palette className="h-4 w-4" />
+            <span>Appearance</span>
           </TabsTrigger>
           <TabsTrigger value="integrations" className="gap-2">
             <CloudIcon className="h-4 w-4" />
@@ -212,6 +245,85 @@ const Settings = () => {
                 <Switch defaultChecked={false} />
               </div>
             </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="appearance" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Theme Settings</CardTitle>
+              <CardDescription>Customize the look and feel of your application.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="theme-selector">Select Theme</Label>
+                  <Select value={theme} onValueChange={handleThemeChange}>
+                    <SelectTrigger className="w-full mt-1.5">
+                      <SelectValue placeholder="Select theme" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="light" className="flex items-center">
+                        <div className="flex items-center gap-2">
+                          <SunIcon className="h-4 w-4 text-amber-500" />
+                          <span>Light</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="dark">
+                        <div className="flex items-center gap-2">
+                          <MoonIcon className="h-4 w-4 text-indigo-400" />
+                          <span>Dark</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="purple">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="h-4 w-4 text-purple-500" />
+                          <span>Purple</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="blue">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="h-4 w-4 text-blue-500" />
+                          <span>Blue</span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="mt-6 pt-4 border-t">
+                  <h3 className="text-lg font-medium mb-3">Theme Preview</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Card className="p-4 bg-background border-2 border-primary">
+                      <p className="font-medium text-foreground">Primary Theme</p>
+                      <p className="text-sm text-muted-foreground mt-1">Background and text colors</p>
+                      <div className="mt-3 flex gap-2">
+                        <div className="w-6 h-6 rounded-full bg-primary"></div>
+                        <div className="w-6 h-6 rounded-full bg-secondary"></div>
+                        <div className="w-6 h-6 rounded-full bg-accent"></div>
+                      </div>
+                    </Card>
+                    
+                    <Card className="p-4">
+                      <p className="font-medium">Card Example</p>
+                      <p className="text-sm text-muted-foreground mt-1">Card with border</p>
+                      <Button size="sm" variant="secondary" className="mt-3">Button</Button>
+                    </Card>
+                    
+                    <Card className="p-4 bg-primary text-primary-foreground">
+                      <p className="font-medium">Primary Card</p>
+                      <p className="text-sm opacity-90 mt-1">With primary background</p>
+                      <Button size="sm" variant="secondary" className="mt-3">Action</Button>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button onClick={handleSave} disabled={loading}>
+                {loading ? "Saving..." : "Save Preferences"}
+              </Button>
+            </CardFooter>
           </Card>
         </TabsContent>
 

@@ -1,11 +1,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+// Define available themes
+export type ThemeType = "light" | "dark" | "purple" | "blue";
 
 type ThemeContextType = {
-  theme: Theme;
+  theme: ThemeType;
   toggleTheme: () => void;
+  setTheme: (theme: ThemeType) => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -15,10 +17,12 @@ export const ThemeProvider = ({
 }: { 
   children: React.ReactNode 
 }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<ThemeType>(() => {
     // Check if theme is stored in localStorage
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    if (savedTheme) return savedTheme;
+    const savedTheme = localStorage.getItem("theme") as ThemeType;
+    if (savedTheme && ["light", "dark", "purple", "blue"].includes(savedTheme)) {
+      return savedTheme;
+    }
     
     // Check user's system preference
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -32,20 +36,29 @@ export const ThemeProvider = ({
     // Update localStorage when theme changes
     localStorage.setItem("theme", theme);
     
-    // Update document class
+    // Remove all theme classes first
+    document.documentElement.classList.remove("dark", "theme-purple", "theme-blue");
+    
+    // Add the appropriate class based on the selected theme
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    } else if (theme === "purple") {
+      document.documentElement.classList.add("theme-purple");
+    } else if (theme === "blue") {
+      document.documentElement.classList.add("theme-blue");
     }
   }, [theme]);
 
+  // Toggle between light and dark modes only
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme(prevTheme => {
+      if (prevTheme === "light") return "dark";
+      return "light";
+    });
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
