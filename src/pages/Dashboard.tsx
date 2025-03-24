@@ -1,25 +1,16 @@
 
 import { useEffect, useState } from "react";
-import { BarChart2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
-import { KeyMetricsSection } from "@/components/dashboard/KeyMetricsSection";
-import { RevenueLeakageSection } from "@/components/dashboard/RevenueLeakageSection";
-import { CustomerJourneySection } from "@/components/dashboard/CustomerJourneySection";
-import { RevenueLeaksSection } from "@/components/dashboard/RevenueLeaksSection";
-import { QuickOptimizeButton } from "@/components/dashboard/QuickOptimizeButton";
+import { IncomeTracker } from "@/components/dashboard/IncomeTracker";
+import { RecentProjects } from "@/components/dashboard/RecentProjects";
+import { ConnectSection } from "@/components/dashboard/ConnectSection";
+import { PremiumFeatures } from "@/components/dashboard/PremiumFeatures";
+import { ProposalProgress } from "@/components/dashboard/ProposalProgress";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const [visibleSections, setVisibleSections] = useState({
-    keyMetrics: true,
-    revenueTrends: true,
-    leakage: true,
-    customerJourney: true,
-    revenueLeaks: true
-  });
 
   useEffect(() => {
     // Simulate data loading
@@ -35,29 +26,27 @@ const Dashboard = () => {
   }, [toast]);
 
   return (
-    <div className="space-y-8 pb-10">
-      <DashboardHeader />
-      
-      {visibleSections.keyMetrics && (
-        <KeyMetricsSection isLoading={isLoading} />
-      )}
+    <div className="space-y-6 pb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <IncomeTracker isLoading={isLoading} />
+        </div>
+        <div>
+          <RecentProjects isLoading={isLoading} />
+        </div>
+      </div>
 
-      {(visibleSections.revenueTrends || visibleSections.leakage) && (
-        <RevenueLeakageSection 
-          showRevenueTrends={visibleSections.revenueTrends} 
-          showLeakage={visibleSections.leakage}
-        />
-      )}
-
-      {visibleSections.customerJourney && (
-        <CustomerJourneySection />
-      )}
-
-      {visibleSections.revenueLeaks && (
-        <RevenueLeaksSection />
-      )}
-
-      <QuickOptimizeButton />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div>
+          <ConnectSection />
+        </div>
+        <div>
+          <PremiumFeatures />
+        </div>
+        <div>
+          <ProposalProgress />
+        </div>
+      </div>
     </div>
   );
 };

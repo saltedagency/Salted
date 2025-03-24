@@ -14,7 +14,7 @@ export function ThemeToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full transition-all duration-300 hover:bg-accent"
+          className="rounded-full transition-all duration-300 bg-gray-100 hover:bg-gray-200"
         >
           <ThemeIcon theme={theme} />
           <span className="sr-only">Change theme</span>
@@ -28,14 +28,14 @@ function ThemeIcon({ theme }: { theme: string }) {
   // Directly import icons instead of using require
   switch (theme) {
     case "light":
-      return <Sun className="h-5 w-5 text-foreground transition-all" />;
+      return <Sun className="h-5 w-5 text-gray-700 transition-all" />;
     case "dark":
-      return <Moon className="h-5 w-5 text-foreground transition-all" />;
+      return <Moon className="h-5 w-5 text-gray-700 transition-all" />;
     case "purple":
-      return <Palette className="h-5 w-5 text-foreground transition-all text-purple-500" />;
+      return <Palette className="h-5 w-5 text-gray-700 transition-all text-purple-500" />;
     case "blue":
-      return <Palette className="h-5 w-5 text-foreground transition-all text-blue-500" />;
+      return <Palette className="h-5 w-5 text-gray-700 transition-all text-blue-500" />;
     default:
-      return <Sun className="h-5 w-5 text-foreground transition-all" />;
+      return <Sun className="h-5 w-5 text-gray-700 transition-all" />;
   }
 }

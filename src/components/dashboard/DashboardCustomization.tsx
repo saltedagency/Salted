@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { 
@@ -24,11 +24,11 @@ interface DashboardSection {
 export function DashboardCustomization() {
   const { toast } = useToast();
   const [sections, setSections] = useState<DashboardSection[]>([
-    { id: "key-metrics", name: "Key Metrics", visible: true },
-    { id: "revenue-trends", name: "Revenue Trends", visible: true },
-    { id: "leakage", name: "Revenue Leakage", visible: true },
-    { id: "customer-journey", name: "Customer Journey", visible: true },
-    { id: "revenue-leaks", name: "Top Revenue Leaks", visible: true },
+    { id: "income-tracker", name: "Income Tracker", visible: true },
+    { id: "recent-projects", name: "Recent Projects", visible: true },
+    { id: "connect", name: "Let's Connect", visible: true },
+    { id: "premium", name: "Premium Features", visible: true },
+    { id: "proposals", name: "Proposal Progress", visible: true },
   ]);
   
   const toggleSection = (id: string) => {
@@ -46,17 +46,14 @@ export function DashboardCustomization() {
       title: "Dashboard customized",
       description: "Your dashboard layout has been updated",
     });
-    
-    // We would trigger a re-render of the dashboard with the new settings
-    // or pass these settings to the dashboard component
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+        <Button variant="outline" size="sm" className="gap-2 bg-gray-50 border-gray-200 text-gray-700">
           <Settings2 className="h-4 w-4" />
-          Customize Dashboard
+          Customize
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
