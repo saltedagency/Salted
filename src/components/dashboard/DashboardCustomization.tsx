@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { 
@@ -12,7 +11,7 @@ import {
   DialogTitle, 
   DialogTrigger 
 } from "@/components/ui/dialog";
-import { Settings2, Check } from "lucide-react";
+import { Settings2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface DashboardSection {

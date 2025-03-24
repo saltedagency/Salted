@@ -23,7 +23,7 @@ export function Layout() {
             mounted ? "opacity-100" : "opacity-0"
           )}
         >
-          <div className="container mx-auto h-full max-w-7xl bg-white/40 backdrop-blur-sm p-8 rounded-3xl shadow-sm">
+          <div className="container mx-auto h-full max-w-7xl">
             <Outlet />
           </div>
         </main>

@@ -1,12 +1,12 @@
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { IncomeTracker } from "@/components/dashboard/IncomeTracker";
 import { RecentProjects } from "@/components/dashboard/RecentProjects";
 import { ConnectSection } from "@/components/dashboard/ConnectSection";
 import { PremiumFeatures } from "@/components/dashboard/PremiumFeatures";
 import { ProposalProgress } from "@/components/dashboard/ProposalProgress";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +27,8 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 pb-10">
+      <DashboardHeader />
+      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <IncomeTracker isLoading={isLoading} />
